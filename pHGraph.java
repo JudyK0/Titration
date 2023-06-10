@@ -30,6 +30,7 @@ public class pHGraph {
    public void run() {
     CartesianFrame frame = new CartesianFrame();
     frame.showUI();
+    
     for (int i=0; i<data.size()-1;i=i+2)
     {
     frame.panel.drawPoint(new Point(data.get(i), data.get(i+1)));
@@ -100,7 +101,8 @@ class CartesianPanel extends JPanel {
   double yLength1=(double)(Y_AXIS_SECOND_Y_COORD - Y_AXIS_FIRST_Y_COORD)/ (yCoordNumbers*100);//bc its 0.1 and its just 0 in int
   double yLength2=(double)(Y_AXIS_SECOND_Y_COORD - Y_AXIS_FIRST_Y_COORD)/ (yCoordNumbers*10);
     public void drawPoint(Point point) {
-    points.add(point);
+    points.add(point);//from the data array
+    
     repaint();
 }
  
@@ -110,7 +112,7 @@ private void drawPointOnPanel(Point point, Graphics g) {
     final int y = (int)((Y_AXIS_SECOND_Y_COORD - (point.y * yLength1) - pointDiameter / 2));
     pHGraph.pointsCoord.add(x);
     pHGraph.pointsCoord.add(y);
-    //g.fillOval(x, y, pointDiameter, pointDiameter);
+    g.fillOval(x, y, pointDiameter, pointDiameter);
 }
 
 
@@ -157,11 +159,10 @@ private void drawPointOnPanel(Point point, Graphics g) {
         g2.drawString(Integer.toString(i/100), Y_AXIS_X_COORD - AXIS_STRING_DISTANCE, (int)(Y_AXIS_SECOND_Y_COORD - (i * yLength1)));
       }
   
-  points.forEach(p -> drawPointOnPanel(p, g));
-  if (pHGraph.pointsCoord.size()>2)
+  points.forEach(p -> drawPointOnPanel(p, g));//depends on point array
+  if (points.size()>1)
     {
-      
-        for (int i=0; i<pHGraph.pointsCoord.size()-3;i=i+2)
+        for (int i=pHGraph.pointsCoord.size()-pHGraph.data.size(); i<pHGraph.pointsCoord.size()-3;i=i+2)//to not cause overlap
         {
             g2.drawLine(pHGraph.pointsCoord.get(i)+2,pHGraph.pointsCoord.get(i+1)+2,pHGraph.pointsCoord.get(i+2)+2,pHGraph.pointsCoord.get(i+3)+2);
         }
